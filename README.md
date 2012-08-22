@@ -1,5 +1,9 @@
 # Bussiness::PayPal::IPN::Modern
 
+## Warning
+
+WIP: Initial brain dump. Don't use.
+
 An attempt to improve Perl's
 [Business::PayPal::IPN](http://search.cpan.org/dist/Business-PayPal-IPN). At
 this point, I don't know if it will be a separate distribution on CPAN, or
