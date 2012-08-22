@@ -1,7 +1,7 @@
 package Business::PayPal::IPN::Modern;
 
 use 5.008001;
-our $VERSION = '0.001_01';
+our $VERSION = '0.001_001';
 $VERSION = eval $VERSION;
 
 use strict;
