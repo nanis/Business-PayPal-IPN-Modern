@@ -34,7 +34,7 @@ my $mymeta = do {
 };
 
 my $license_works = do {
-    no warnings; ($ExtUtils::MakeMaker::VERSION >= 6.3002
+    no warnings; $ExtUtils::MakeMaker::VERSION >= 6.3002
 };
 
 WriteMakefile(
