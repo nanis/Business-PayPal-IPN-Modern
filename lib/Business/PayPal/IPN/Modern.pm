@@ -324,6 +324,26 @@ None.
 
 =head2 Attributes affecting object behavior
 
+=over 4
+
+=item cgi_class
+
+=item content
+
+=item is_verified
+
+=item my_email
+
+=item max_paypal_request_size
+
+=item paypal_gateway
+
+=item query_filehandle
+
+=item ua_class
+
+=over
+
 =head2 PayPal response attributes
 
 =head3 Information about you:
