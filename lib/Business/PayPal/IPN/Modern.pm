@@ -320,8 +320,141 @@ I<Explain how this module handles things>
 
 None.
 
+=head1 ATTRIBUTES
+
+=head2 Attributes affecting object behavior
+
+=head2 PayPal response attributes
+
+=head3 Information about you:
+
+=over 4
+
+=item receiver_email
+
+=item receiver_id
+
+=item residence_country
+
+=back
+
+=head3 Information about the transaction:
+
+=over 4
+
+=item test_ipn
+
+True if testing with the Sandbox.
+
+=item transaction_subject
+
+=item txn_id
+
+Keep this ID to avoid processing the transaction twice.
+
+=item txn_type
+
+=back
+
+=head3 Information about your buyer:
+
+=over 4
+
+=item payer_email
+
+=item payer_id
+
+=item payer_status
+
+=item first_name
+
+=item last_name
+
+=item address_city
+
+=item address_country
+
+=item address_country_code
+
+=item address_name
+
+=item address_state
+
+=item address_status
+
+=item address_street
+
+=item address_zip
+
+=back
+
+=head3 Information about the payment:
+
+=over 4
+
+=item custom
+
+Your custom field.
+
+=item handling_amount
+
+=item item_name
+
+=item item_number
+
+=item mc_currency
+
+=item mc_fee
+
+=item mc_gross
+
+=item payment_date
+
+=item payment_fee
+
+=item payment_gross
+
+=item payment_status
+
+Status, which determines whether the transaction is complete.
+
+=item payment_type
+
+Kind of payment.
+
+=item protection_eligibility
+
+=item quantity
+
+=item shipping
+
+=item tax
+
+=back
+
+=head3 Other information about the transaction:
+
+=over 4
+
+=item notify_version
+
+IPN version; PayPal documentation says it can be ignored.
+
+=item charset
+
+=item verify_sign
+
+=back
+
 =head1 METHODS
 
+=head2 verify_and_init
+
+TODO: Document this.
+
+=head1 EXCEPTIONS
+
+TODO: Document this
 
 =head1 AUTHOR
 
