@@ -232,6 +232,25 @@ our $MAX_PAYPAL_REQUEST_SIZE = 16 * 1_024;
         return;
     }
 
+    sub _check_receiver_email {
+        my $self = shift;
+
+        if ($self->my_email ne $self->receiver_email) {
+            $self->throw(MismatchedReceiverEmail => (
+                expected => $self->my_email,
+                got => $self->received_email,
+                error => sprintf(
+                    "Receiver email addresses don't match." .
+                    "Expected: '%s'; got '%s'",
+                    $self->my_email,
+                    $self->receiver_email,
+                ),
+            ));
+        }
+
+        return;
+    }
+
     sub verify_and_init {
         my $self = shift;
         $self->_verify;
