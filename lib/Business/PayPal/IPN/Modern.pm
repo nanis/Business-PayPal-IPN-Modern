@@ -105,39 +105,40 @@ our $MAX_PAYPAL_REQUEST_SIZE = 16 * 1_024;
         default => sub { 'https://www.paypal.com/cgi-bin/webscr' },
     );
 
+    has paypal_attr => (
+        is => 'ro',
+        init_arg => undef,
+        default => sub { \@paypal_attr },
+    );
+
     has query_filehandle => (
         is => 'ro',
         default => sub { \*STDIN },
     );
 
-    has ua_class => (
+    has ua => (
         is => 'ro',
         default => sub {
-            my $class;
-            eval {
-                require LWP::UserAgent;
-                1;
-            } and $class = 'LWP::UserAgent';
-            return $class if defined $class;
-
-            PayPalIPN_NoUAException->throw(
-                error =>
-                "No user agent provided in the constructor and attempt to require 'LWP::UserAgent' failed",
-            );
+            require LWP::UserAgent;
+            return LWP::UserAgent->new;
         },
     );
 
-    has fields => (
-        is => 'ro',
-        init_arg => undef,
-        default => sub { \@fields },
-    );
+    sub throw {
+        my $self = shift;
+        my $exception = shift;
+        my $base = 'Business::PayPal::IPN::Modern::X';
 
-    for my $field ( @fields ) {
-        has $field => (
+        eval "require $base";
+
+        $exception->throw(@_);
+    }
+
+    for my $attr ( @paypal_attr ) {
+        has $attr => (
             is => 'ro',
             init_arg => undef,
-            writer => "_set_$field"
+            writer => "_set_$attr"
         );
     }
 
