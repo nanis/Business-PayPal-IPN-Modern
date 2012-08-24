@@ -244,10 +244,11 @@ our $MAX_PAYPAL_REQUEST_SIZE = 16 * 1_024;
         return;
     }
 
-    sub verify_and_init {
+    sub verify_init_check {
         my $self = shift;
-        $self->_verify;
-        $self->_init;
+        $self->verify;
+        $self->init;
+        $self->check_receiver_email;
         return;
     }
 }
