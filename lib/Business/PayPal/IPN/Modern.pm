@@ -292,29 +292,84 @@ I<Explain how this module handles things>
 
 None.
 
+=head1 METHODS
+
+=head2 check_receiver_email
+
+Call after the request from PayPal has been verified using C<verify> and the
+PayPal attributes have been initialized using C<init>. Throws an exception
+if the C<receiver_email> in the request does not match the C<my_email> value
+specified in the object constructor.
+
+=head2 init
+
+Call to initialize PayPal attributes after verifying the request using
+C<verify>.
+
+=head2 throw
+
+Convenience method to throw an exception of the specified sub-type. Provides
+a central location where the mapping of exceptions to implementations of
+those exceptions can be replaced.
+
+=head2 verify
+
+Verify that the request was sent by PayPal. Throws an exception if the
+request is invalid or cannot be verified.
+
+=head2 verify_init_check
+
+Convenience method to call C<verify>, C<init>, and C<check_receiver_email>.
+
 =head1 ATTRIBUTES
 
 =head2 Attributes affecting object behavior
 
+All attributes are read only. You can override the default values for the
+attributes listed in this section by passing them to the constructor.
+
 =over 4
 
-=item cgi_class
+=item cgi_factory
+
+A coderef that will initialize a new CGI object from a filehandle. By
+default, this module returns instances of L<CGI::Simple>. Make sure
+to C<require> the module first.
 
 =item content
 
-=item is_verified
+The content of the original request.
 
 =item my_email
 
+The email address to expect in the C<receiver_email> field of the request
+from PayPal.
+
 =item max_paypal_request_size
+
+Maximum size of the request to expect from PayPal. The default is 16K.
+
+=item paypal_attr
+
+The list of attributes to be filled in using the information provided in the
+PayPal request.
 
 =item paypal_gateway
 
+The URI to contact to verify the request.
+
 =item query_filehandle
 
-=item ua_class
+Read initial PayPal request from this file handle.
 
-=over
+=item ua
+
+The user agent object to use to contact PayPal to verify the request. The
+default is L<LWP::UserAgent>. This attribute is mainly provided to make
+testing easier. Any object providing a C<request> method that provides and
+appropriate response will do.
+
+=back
 
 =head2 PayPal response attributes
 
