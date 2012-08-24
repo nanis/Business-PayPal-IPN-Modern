@@ -146,16 +146,21 @@ our $MAX_PAYPAL_REQUEST_SIZE = 16 * 1_024;
         my $self = shift;
 
         my $content_length = $ENV{CONTENT_LENGTH};
-        defined($content_length)
-            or PayPalIPN_NoContentLength_Exception->throw(
-                error => 'No $ENV{CONTENT_LENGTH}',
+        unless ( defined $content_length ) {
+            $self->throw(
+                MissingContentLength => (
+                    error => 'No $ENV{CONTENT_LENGTH}',
+                ),
             );
+        }
 
         my $limit = $self->max_paypal_request_size;
         if ($content_length > $limit) {
-            PayPalIPN_RequestTooBig_Exception->throw(
-                error => "CONTENT_LENGTH > $limit",
-                limit => $limit,
+            $self->throw(
+                RequestTooBig => (
+                    error => "CONTENT_LENGTH > $limit",
+                    limit => $limit,
+                ),
             );
         }
 
@@ -164,15 +169,15 @@ our $MAX_PAYPAL_REQUEST_SIZE = 16 * 1_024;
 
         unless (defined $ret) {
             my $os_error = $!;
-            PayPalIPN_ReadQueryFailed_Exception->throw(
-                error => 'Failed to read from input',
-                os_error => $os_error,
+            $self->throw(FailedReadQuery => (
+                    error => 'Failed to read from input',
+                    os_error => $os_error,
+                ),
             );
         }
 
         # post back to PayPal system to validate
         $content .= '&cmd=_notify-validate';
-        eval sprintf('require %s', $self->ua_class);
 
         # save copy to parse with $cgi_class after verification
         $self->_set_content($content);
@@ -187,23 +192,26 @@ our $MAX_PAYPAL_REQUEST_SIZE = 16 * 1_024;
 
         my $res = eval { $ua->request($req) };
         unless ($res->is_success) {
-            PayPalIPN_VerifyRequestFailed_Exception->throw(
-                error => $res->status_line,
+            $self->throw(FailedVerifyRequest => (
+                    error => $res->status_line,
+                ),
             );
         }
 
         my $msg = $res->content;
 
         if ($msg eq 'INVALID') {
-            PayPalIPN_Invalid_Exception->throw(
-                error => "PayPal responded with 'INVALID'",
+            $self->throw(Invalid => (
+                    error => "PayPal responded with 'INVALID'",
+                ),
             );
         }
 
         if ($msg ne 'VERIFIED') {
-            PayPalIPN_Invalid_Exception->throw(
-                error => sprintf("Unexpected PayPal response: '%s'", $msg),
-            )
+            $self->throw(Unknown => (
+                    error => "Unexpected PayPal response: '$msg'",
+                )
+            );
         }
 
         return 1;
