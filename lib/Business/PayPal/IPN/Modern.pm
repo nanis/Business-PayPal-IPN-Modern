@@ -43,7 +43,6 @@ our $MAX_PAYPAL_REQUEST_SIZE = 16 * 1_024;
         'address_zip',
 
         # Information about the payment:
-        # Your custom field
         'custom',
         'handling_amount',
         'item_name',
@@ -54,9 +53,7 @@ our $MAX_PAYPAL_REQUEST_SIZE = 16 * 1_024;
         'payment_date',
         'payment_fee',
         'payment_gross',
-        # Status, which determines whether the transaction is complete
         'payment_status',
-        # Kind of payment
         'payment_type',
         'protection_eligibility',
         'quantity',
@@ -64,20 +61,19 @@ our $MAX_PAYPAL_REQUEST_SIZE = 16 * 1_024;
         'tax',
 
         # Other information about the transaction:
-        # IPN version; can be ignored
         'notify_version',
         'charset',
         'verify_sign',
     );
 
-    has cgi_class => (
+    has cgi_factory => (
         is => 'ro',
         default => sub {
-            my $class = eval {
+            sub {
+                my $fh = shift;
                 require CGI::Simple;
-                1;
-            } ? 'CGI::Simple' : 'CGI';
-            return $class;
+                return CGI::Simple->new( $fh );
+            }
         },
     );
 
