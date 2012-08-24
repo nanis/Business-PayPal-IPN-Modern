@@ -83,13 +83,6 @@ our $MAX_PAYPAL_REQUEST_SIZE = 16 * 1_024;
         writer => '_set_content',
     );
 
-    has is_verified => (
-        is => 'ro',
-        init_arg => undef,
-        default => sub { 0 },
-        writer => '_set_is_verified',
-    );
-
     has my_email => (
         is => 'ro',
         required => 1,
