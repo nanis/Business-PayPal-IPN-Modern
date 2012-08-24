@@ -135,7 +135,7 @@ our $MAX_PAYPAL_REQUEST_SIZE = 16 * 1_024;
         );
     }
 
-    sub _verify {
+    sub verify {
         my $self = shift;
 
         my $content_length = $ENV{CONTENT_LENGTH};
@@ -210,7 +210,7 @@ our $MAX_PAYPAL_REQUEST_SIZE = 16 * 1_024;
         return 1;
     }
 
-    sub _init {
+    sub init {
         my $self = shift;
 
         open my $fh, '<', \ $self->content;
@@ -225,7 +225,7 @@ our $MAX_PAYPAL_REQUEST_SIZE = 16 * 1_024;
         return;
     }
 
-    sub _check_receiver_email {
+    sub check_receiver_email {
         my $self = shift;
 
         if ($self->my_email ne $self->receiver_email) {
