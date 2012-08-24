@@ -7,65 +7,19 @@ $VERSION = eval $VERSION;
 use strict;
 use warnings;
 
-our $MAX_PAYPAL_REQUEST_SIZE = 4_096;
+our $MAX_PAYPAL_REQUEST_SIZE = 16 * 1_024;
 
 {
     use Moo;
     use HTTP::Request;
 
-    use Exception::Class (
-        'PayPalIPN_Exception',
-
-        'PayPalIPN_Invalid_Exception' => {
-            isa => 'PayPalIPN_Exception',
-        },
-
-        'PayPalIPN_Invalid_ReceiverEmail_Exception' => {
-            isa => 'PayPalIPN_Exception',
-            fields => [ qw( got expected )],
-        },
-
-        'PayPalIPN_Connection_Exception' => {
-            isa => 'PayPalIPN_Exception',
-            fields => [qw( ua_error )],
-        },
-
-        'PayPalIPN_ReadRequestFailed_Exception' => {
-            isa => 'PayPalIPN_Exception',
-        },
-
-        'PayPalIPN_RequestTooBig_Exception' => {
-            isa => 'PayPalIPN_ReadRequestFailed_Exception',
-            fields => [qw( limit )],
-        },
-
-        'PayPalIPN_NoContentLength_Exception' => {
-            isa => 'PayPalIPN_ReadRequestFailed_Exception',
-        },
-
-        'PayPalIPN_ReadQueryFailed_Exception' => {
-            isa => 'PayPalIPN_ReadRequestFailed_Exception',
-            fields => [qw( os_error )],
-        },
-
-        'PayPalIPN_NoUAException' => {
-            isa => 'PayPalIPN_Exception',
-        },
-
-        'PayPalIPN_VerifyRequestFailed_Exception' => {
-            isa => 'PayPalIPN_Exception',
-        },
-    );
-
-    my @fields = (
+    my @paypal_attr = (
         # Information about you:
-        # Check email address to make sure that this is not a spoof
         'receiver_email',
         'receiver_id',
         'residence_country',
 
         # Information about the transaction:
-        # Testing with the Sandbox
         'test_ipn',
         'transaction_subject',
 
