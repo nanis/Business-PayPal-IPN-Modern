@@ -214,7 +214,7 @@ our $MAX_PAYPAL_REQUEST_SIZE = 16 * 1_024;
         my $self = shift;
 
         open my $fh, '<', \ $self->content;
-        my $cgi = $self->cgi_class->new($fh);
+        my $cgi = $self->cgi_factory->();
 
         my $fields = $self->fields;
         for my $field ( @$fields ) {
