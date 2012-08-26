@@ -4,9 +4,11 @@ lib/Business/PayPal/IPN/Modern.pm
 lib/Business/PayPal/IPN/X.pm
 Makefile.PL
 MANIFEST			This list of files
+MANIFEST.SKIP
 README
 README.md
 t/00-load.t
+t/01-verify.t
 t/boilerplate.t
 t/manifest.t
 t/pod-coverage.t
