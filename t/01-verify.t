@@ -103,7 +103,7 @@ sub run {
                 Business::PayPal::IPN::Modern->new(
                     my_email => 'test@example.com',
                     paypal_max_request_size => 0,
-                    query_filehandle => get_fh(\ ''),
+                    query_filehandle => undef,
                     ua => $ua,
                 )->verify,
             },

@@ -172,7 +172,7 @@ our $PAYPAL_MAX_REQUEST_SIZE = 16 * 1_024;
         }
 
         my $content;
-        my $ret = read $self->query_filehandle, $content, $limit;
+        my $ret = eval { read $self->query_filehandle, $content, $limit };
 
         unless (defined $ret) {
             my $os_error = $!;
