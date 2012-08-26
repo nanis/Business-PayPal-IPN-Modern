@@ -88,14 +88,16 @@ our $MAX_PAYPAL_REQUEST_SIZE = 16 * 1_024;
         required => 1,
     );
 
-    has max_paypal_request_size => (
+    has paypal_max_request_size => (
         is => 'ro',
-        default => sub { $MAX_PAYPAL_REQUEST_SIZE },
+        default => sub { $PAYPAL_MAX_REQUEST_SIZE },
+        writer => '__set_paypal_max_request_size',
     );
 
     has paypal_gateway => (
         is => 'ro',
-        default => sub { 'https://www.paypal.com/cgi-bin/webscr' },
+        default => sub { $PAYPAL_GATEWAY },
+        writer => '__set_paypal_gateway',
     );
 
     has paypal_attr => (
@@ -147,7 +149,7 @@ our $MAX_PAYPAL_REQUEST_SIZE = 16 * 1_024;
             );
         }
 
-        my $limit = $self->max_paypal_request_size;
+        my $limit = $self->paypal_max_request_size;
         if ($content_length > $limit) {
             $self->throw(
                 RequestTooBig => (
@@ -175,7 +177,6 @@ our $MAX_PAYPAL_REQUEST_SIZE = 16 * 1_024;
         # save copy to parse with $cgi_class after verification
         $self->_set_content($content);
 
-        my $ua = $self->ua_class->new;
         my $req = HTTP::Request->new(
             POST => $self->paypal_gateway,
         );
@@ -183,7 +184,7 @@ our $MAX_PAYPAL_REQUEST_SIZE = 16 * 1_024;
         $req->content_type('application/x-www-form-urlencoded');
         $req->content($content);
 
-        my $res = eval { $ua->request($req) };
+        my $res = eval { $self->ua->request($req) };
         unless ($res->is_success) {
             $self->throw(FailedVerifyRequest => (
                     error => $res->status_line,
@@ -345,10 +346,6 @@ The content of the original request.
 The email address to expect in the C<receiver_email> field of the request
 from PayPal.
 
-=item max_paypal_request_size
-
-Maximum size of the request to expect from PayPal. The default is 16K.
-
 =item paypal_attr
 
 The list of attributes to be filled in using the information provided in the
@@ -357,6 +354,10 @@ PayPal request.
 =item paypal_gateway
 
 The URI to contact to verify the request.
+
+=item paypal_max_request_size
+
+Maximum size of the request to expect from PayPal. The default is 16K.
 
 =item query_filehandle
 
