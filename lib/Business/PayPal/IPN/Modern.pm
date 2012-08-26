@@ -7,7 +7,8 @@ $VERSION = eval $VERSION;
 use strict;
 use warnings;
 
-our $MAX_PAYPAL_REQUEST_SIZE = 16 * 1_024;
+our $PAYPAL_GATEWAY = 'https://www.paypal.com/cgi-bin/webscr';
+our $PAYPAL_MAX_REQUEST_SIZE = 16 * 1_024;
 
 {
     use Moo;
