@@ -11,6 +11,7 @@ our $PAYPAL_GATEWAY = 'https://www.paypal.com/cgi-bin/webscr';
 our $PAYPAL_MAX_REQUEST_SIZE = 16 * 1_024;
 
 {
+    use Carp qw( croak );
     use Moo;
     use HTTP::Request;
 
@@ -122,12 +123,22 @@ our $PAYPAL_MAX_REQUEST_SIZE = 16 * 1_024;
 
     sub throw {
         my $self = shift;
-        my $exception = shift;
-        my $base = 'Business::PayPal::IPN::Modern::X';
+        my $ex = shift;
+        my $base = 'Business::PayPal::IPN::X';
 
-        eval "require $base";
+        {
+            local $@;
 
-        $exception->throw(@_);
+            unless (defined( eval "require $base" )) {
+                my $x = $@;
+                croak "Failed to require '$base': $@";
+            }
+        }
+
+        $base->import;
+        $ex = "${base}::$ex";
+
+        $ex->throw(@_);
     }
 
     for my $attr ( @paypal_attr ) {

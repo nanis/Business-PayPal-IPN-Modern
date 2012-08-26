@@ -1,53 +1,57 @@
-package Business::PayPal::IPN::Modern::X;
+package Business::PayPal::IPN::X;
 
 our $VERSION = '0.001_001';
 $VERSION = eval $VERSION;
 
-use Exception::Class (
-    'PayPalIPN_Exception',
+my $class;
 
-    'PayPalIPN_Invalid_Exception' => {
-        isa => 'PayPalIPN_Exception',
+BEGIN {
+    $class = 'Business::PayPal::IPN::X';
+}
+
+use Exception::Class (
+    $class,
+
+    "${class}::Invalid" => {
+        isa => $class
     },
 
-    'PayPalIPN_Invalid_ReceiverEmail_Exception' => {
-        isa => 'PayPalIPN_Exception',
+    "${class}::InvalidReceiverEmail" => {
+        isa => $class,
         fields => [ qw( got expected )],
     },
 
-    'PayPalIPN_Connection_Exception' => {
-        isa => 'PayPalIPN_Exception',
+    "${class}::Connection" => {
+        isa => $class,
         fields => [qw( ua_error )],
     },
 
-    'PayPalIPN_ReadRequestFailed_Exception' => {
-        isa => 'PayPalIPN_Exception',
+    "${class}::FailedReadRequest" => {
+        isa => $class,
     },
 
-    'PayPalIPN_RequestTooBig_Exception' => {
-        isa => 'PayPalIPN_ReadRequestFailed_Exception',
+    "${class}::RequestTooBig" => {
+        isa => $class,
         fields => [qw( limit )],
     },
 
-    'PayPalIPN_NoContentLength_Exception' => {
-        isa => 'PayPalIPN_ReadRequestFailed_Exception',
+    "${class}::MissingContentLength" => {
+        isa => $class,
     },
 
-    'PayPalIPN_ReadQueryFailed_Exception' => {
-        isa => 'PayPalIPN_ReadRequestFailed_Exception',
+    "${class}::FailedReadQuery" => {
+        isa => $class,
         fields => [qw( os_error )],
     },
 
-    'PayPalIPN_NoUAException' => {
-        isa => 'PayPalIPN_Exception',
-    },
-
-    'PayPalIPN_VerifyRequestFailed_Exception' => {
-        isa => 'PayPalIPN_Exception',
+    "${class}::FailedVerifyRequest" => {
+        isa => $class,
     },
 );
 
 
+
+1;
 
 __END__
 
