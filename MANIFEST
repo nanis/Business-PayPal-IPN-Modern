@@ -8,7 +8,6 @@ MANIFEST.SKIP
 README
 README.md
 t/00-load.t
-t/01-verify.t
 t/010-x-missing-content-length.t
 t/011-x-request-too-big.t
 t/012-x-failed-req-query.t
