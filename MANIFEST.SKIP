@@ -5,6 +5,7 @@
 \ABuild\z
 \ABuild.bat\z
 \A_build
+[.]DS_Store
 \Apm_to_blib
 [.]tar[.]gz\z
 \A[.]lwpcookies
