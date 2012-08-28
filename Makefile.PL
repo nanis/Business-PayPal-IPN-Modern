@@ -6,11 +6,13 @@ use ExtUtils::MakeMaker;
 # Various bits copied shamelessly from Moo's Makefile.PL
 
 my %BUILD_DEPS = (
-    'Test::More' => 0.96,
+    'Mock::Quick' => '1.104',
+    'Test::More' => '0.96',
 );
 
 my %RUN_DEPS = (
-    Moo => '1.000003',
+    'Exception::Class' => '1.32',
+    'Moo' => '1.000003',
 );
 
 my %extra_info = (
