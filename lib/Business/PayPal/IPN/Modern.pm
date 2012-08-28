@@ -73,6 +73,12 @@ our $PAYPAL_MAX_REQUEST_SIZE = 16 * 1_024;
         default => sub {
             sub {
                 my $fh = shift;
+                unless (defined $fh) {
+                    Business::PayPal::IPN::X->throw(
+                        error => 'No file handle given to cgi_factory',
+                    );
+                }
+
                 require CGI::Simple;
                 return CGI::Simple->new( $fh );
             }
@@ -227,7 +233,7 @@ our $PAYPAL_MAX_REQUEST_SIZE = 16 * 1_024;
         my $self = shift;
 
         open my $fh, '<', \ $self->content;
-        my $cgi = $self->cgi_factory->();
+        my $cgi = $self->cgi_factory->( $fh );
 
         my $fields = $self->fields;
         for my $field ( @$fields ) {
